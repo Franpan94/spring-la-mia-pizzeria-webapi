@@ -2,6 +2,8 @@ package org.generation.italy.demo.pojo;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,8 +13,6 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-
-
 
 @Entity
 @Table
@@ -28,6 +28,7 @@ public class Ingredient {
 	private String name;
 	
 	@ManyToMany(mappedBy = "ingredients")
+	@JsonIgnore
 	private List<Pizzeria> pizze;
 	
 	public Ingredient() {

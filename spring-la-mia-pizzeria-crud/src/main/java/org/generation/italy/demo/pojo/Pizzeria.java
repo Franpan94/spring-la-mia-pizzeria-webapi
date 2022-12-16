@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.generation.italy.demo.inter.PriceableInt;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,11 +39,9 @@ public class Pizzeria implements PriceableInt {
 	
 	@ManyToOne
 	@JoinColumn
-	@JsonIgnore
 	private Promotion promotion;
 
 	@ManyToMany
-	@JsonIgnore
 	private List<Ingredient> ingredients;
 
 	@NotNull(message="Il prezzo deve avere un valore compreso tra 6 e 30")

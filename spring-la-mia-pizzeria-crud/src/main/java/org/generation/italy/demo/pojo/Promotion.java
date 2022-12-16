@@ -3,6 +3,8 @@ package org.generation.italy.demo.pojo;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,6 +34,7 @@ public class Promotion {
     private LocalDate finishDate;
     
     @OneToMany(mappedBy = "promotion", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<Pizzeria> pizze;
     
     @NotEmpty(message = "Il nome deve contenere qualcosa")
