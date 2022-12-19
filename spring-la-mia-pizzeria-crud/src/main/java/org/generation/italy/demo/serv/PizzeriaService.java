@@ -14,9 +14,9 @@ public class PizzeriaService {
 	@Autowired
 	private PizzeriaRepo pizzeriaRepo;
 	
-	public void save(Pizzeria pizzeria) {
+	public Pizzeria save(Pizzeria pizzeria) {
 		
-		pizzeriaRepo.save(pizzeria);
+		return pizzeriaRepo.save(pizzeria);
 	}
 	
 	public List<Pizzeria> findAll(){
