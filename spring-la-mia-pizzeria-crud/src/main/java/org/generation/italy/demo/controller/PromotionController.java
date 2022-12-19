@@ -29,7 +29,7 @@ public class PromotionController {
 	@Autowired
 	private PromotionService prts;
 	
-	@GetMapping
+	@GetMapping("/user")
 	public String index(Model model) {
 		
 		List<Promotion> promotions = prts.findAllWithPizza();
@@ -38,7 +38,7 @@ public class PromotionController {
 		return "Promotions";
 	}
 	
-	@GetMapping("/create")
+	@GetMapping("/admin/create")
 	public String create(Model model) {
 		
 		Promotion promotion = new Promotion();
@@ -50,14 +50,14 @@ public class PromotionController {
 		return "PromotionCreate";
 	}
 	
-	@PostMapping("/store")
+	@PostMapping("/admin/store")
 	public String store(@Valid Promotion promotion,
 			BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		
         if(bindingResult.hasErrors()) {
 			
 			redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-			return "redirect:/promotion/create";
+			return "redirect:/promotion/admin/create";
 		}
 		
 		
@@ -75,13 +75,13 @@ public class PromotionController {
 			String message = "Il nome deve essere unico";
 			redirectAttributes.addFlashAttribute("message", message);
 			
-			return "redirect:/promotion/create";
+			return "redirect:/promotion/admin/create";
 		}
         
-        return "redirect:/promotion";
+        return "redirect:/promotion/user";
 	}
 	
-	@GetMapping("/edit/{id}")
+	@GetMapping("/admin/edit/{id}")
 	public String edit(@PathVariable("id") int id, Model model) {
 		
 		List<Pizzeria> pizze = prs.findAll();
@@ -93,7 +93,7 @@ public class PromotionController {
 		return "PromotionEdit";
 	}
 	
-	@PostMapping("/update")
+	@PostMapping("/admin/update")
 	public String update(@Valid Promotion promotion,
 			BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		
@@ -101,7 +101,7 @@ public class PromotionController {
 			
 			redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
 			
-			return "redirect:/promotion/edit/" + promotion.getId();
+			return "redirect:/promotion/admin/edit/" + promotion.getId();
 		}
 		
 		try {
@@ -119,15 +119,15 @@ public class PromotionController {
 			String message = "Il nome deve essere unico";
 			redirectAttributes.addFlashAttribute("message", message);
 			
-			return "redirect:/promotion/edit/" + promotion.getId();
+			return "redirect:/promotion/admin/edit/" + promotion.getId();
 			
 			
 		}
 		
-		return "redirect:/promotion";
+		return "redirect:/promotion/user";
 	}
 	
-	@GetMapping("/delete/{id}")
+	@GetMapping("/admin/delete/{id}")
 	public String delete(@PathVariable("id") int id,
 			RedirectAttributes redirectAttributes) {
 		
@@ -143,6 +143,6 @@ public class PromotionController {
 			redirectAttributes.addFlashAttribute("message", message);
 		}
 		
-		return "redirect:/promotion";
+		return "redirect:/promotion/user";
 	}
 }

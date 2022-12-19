@@ -13,7 +13,7 @@
    <div class="row">
       <div class="col">
           <h1 class="text-center p-3">Crea i tuoi nuovi ingredienti</h1>
-          <form method="POST" action="/ingredient/store" th:object="${ingredient}">
+          <form method="POST" th:action="@{/ingredient/admin/store}" th:object="${ingredient}">
         
              <label for="exampleInputEmail1" class="form-label">Nome</label>
              <input type="text" name="name" class="form-control" id="exampleInputEmail1" 
@@ -36,7 +36,7 @@
              <div class="pt-3 text-center">
                    <button type="submit" class="btn btn-primary text-white">Aggiungi</button>
                    <button class="btn btn-success text-white"> 
-                      <a style="text-decoration: none" href="/ingredient" class="text-white">HomePage</a>
+                      <a style="text-decoration: none" href="/ingredient/user" class="text-white">HomePage</a>
                   </button>
              </div>
           </form>

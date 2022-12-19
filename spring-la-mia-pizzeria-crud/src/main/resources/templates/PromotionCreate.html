@@ -13,7 +13,7 @@
         <div class="row">
            <div class="col">
               <h1 class="text-center p-3">Crea la tua nuova promozione</h1>
-              <form method="POST" action="/promotion/store" th:object="${promotion}">
+              <form method="POST" th:action="@{/promotion/admin/store}" th:object="${promotion}">
         
                  <label for="exampleInputEmail1" class="form-label">Nome</label>
                  <input type="text" name="name" class="form-control" id="exampleInputEmail1" 
@@ -44,7 +44,7 @@
                   <div class="pt-3 text-center">
                       <button type="submit" class="btn btn-primary text-white">Aggiungi</button>
                       <button class="btn btn-success text-white"> 
-                         <a style="text-decoration: none" href="/promotion" class="text-white">HomePage</a>
+                         <a style="text-decoration: none" href="/promotion/user" class="text-white">HomePage promozioni</a>
                       </button>
                    </div>
                  </form>

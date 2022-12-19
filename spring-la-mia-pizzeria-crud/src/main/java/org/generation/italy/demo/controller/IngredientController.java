@@ -28,7 +28,7 @@ public class IngredientController {
 	@Autowired
 	private PizzeriaService pizzeriaServ;
 	
-	@GetMapping
+	@GetMapping("/user")
 	public String index(Model model) {
 		
 		List<Ingredient> ingredients = ingredientServ.findAllWithPizza();
@@ -37,7 +37,7 @@ public class IngredientController {
 		return "Ingredients";
 	}
 	
-	@GetMapping("/create")
+	@GetMapping("/admin/create")
 	public String create(Model model) {
 		
 		Ingredient ingredient = new Ingredient();
@@ -49,14 +49,14 @@ public class IngredientController {
 		return "IngredientCreate";
 	}
 	
-	@PostMapping("/store")
+	@PostMapping("/admin/store")
 	public String store(@Valid Ingredient ingredient,
 				BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 			
 			if(bindingResult.hasErrors()) {
 				
 				redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-				return "redirect:/ingredient/create";
+				return "redirect:/ingredient/admin/create";
 			}
 			
 			try {
@@ -73,12 +73,12 @@ public class IngredientController {
 				
 				String message = "Il nome deve essere unico";
 				redirectAttributes.addFlashAttribute("message", message);
-				return "redirect:/ingredient/create";
+				return "redirect:/ingredient/admin/create";
 			}
-			return "redirect:/ingredient";
+			return "redirect:/ingredient/user";
 	}
 	
-	@GetMapping("/edit/{id}")
+	@GetMapping("/admin/edit/{id}")
 	public String edit(@PathVariable("id") int id, Model model) {
 		
 		List<Pizzeria> pizze = pizzeriaServ.findAll();
@@ -91,7 +91,7 @@ public class IngredientController {
 		return "IngredientEdit";
 	}
 	
-	@PostMapping("/update/{id}")
+	@PostMapping("/admin/update/{id}")
 	public String update(@PathVariable("id") int id, @Valid Ingredient ingredient,
 			BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		
@@ -99,7 +99,7 @@ public class IngredientController {
 			
 			redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
 			
-			return "redirect:/ingredient/edit/" + id;
+			return "redirect:/ingredient/admin/edit/" + id;
 		}
 		
 		try {
@@ -122,10 +122,10 @@ public class IngredientController {
 			return "redirect:/ingredient/edit/" + id;
 		}
 		
-		return "redirect:/ingredient";
+		return "redirect:/ingredient/user";
 	}
 	
-	@GetMapping("/delete/{id}")
+	@GetMapping("/admin/delete/{id}")
 	public String delete(@PathVariable("id") int id,
 			RedirectAttributes redirectAttributes) {
 		
@@ -143,6 +143,6 @@ public class IngredientController {
 			redirectAttributes.addFlashAttribute("message", message);
 		}
 		
-		return "redirect:/ingredient";
+		return "redirect:/ingredient/user";
 	}
 }

@@ -15,13 +15,13 @@
   <div class="container">
       <div class="row">
          <div class="col">
-            <form method="POST" action="/drink/update" th:object="${drink}">
+            <form method="POST" th:action="@{/drink/admin/update}" th:object="${drink}">
                <input type="number" name="id" th:field="*{id}" style="display:none">
                <div th:replace="frag :: form()"></div>
                <div class="text-center">
                   <button type="submit" class="btn btn-warning text-black">Modifica</button>
                   <button type="submit" class="btn btn-success">
-                     <a style="text-decoration: none" class="text-white" href="/pizza">HomePage</a>
+                     <a style="text-decoration: none" class="text-white" href="/drink/user">HomePage drink</a>
                   </button>
                </div>
              </form> 

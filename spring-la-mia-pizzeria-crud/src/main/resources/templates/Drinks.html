@@ -12,20 +12,25 @@
 <body class=" pt-5">
    <h4 class="text-center text-danger">[[${message}]]</h4>
    <h1 class="pb-3 text-center">Drink</h1>
+   <div class="text-center p-3">
+      Logged user: <span sec:authentication="name">Bob</span>
+      Roles: <span sec:authentication="principal.authorities">[USER, ADMIN]</span>
+   </div>
    <div class="pb-3 d-flex justify-content-around">
       <button class="btn btn-primary mb-3">
-         <a style="text-decoration: none" href="/drink/create" class="text-white">Aggiungi nuovo drink</a>
+         <a style="text-decoration: none" href="/drink/admin/create" class="text-white" sec:authorize="hasAuthority('ADMIN')">Aggiungi nuovo drink</a>
      </button>
      <button class="btn btn-primary mb-3">
-         <a style="text-decoration: none" href="/drink/search" class="ms_text_decoration text-white">Cerca fra i tuoi drink</a>
+         <a style="text-decoration: none" href="/drink/user/search" class="ms_text_decoration text-white" sec:authorize="hasAuthority('USER')">Cerca fra i tuoi drink</a>
      </button>
    </div>
    <div th:replace= "frag :: drinks (${drinks})" ></div>
    <h4 class="p-5 text-center" th:if="${drinks.size() < 1}">Non sono presenti drink al momento</h4>
-   <div class="pb-2 text-center">
+   <div class="pb-2 d-flex justify-content-around">
       <button class="btn btn-dark">
           <a style="text-decoration: none" class="text-white ms_text_decoration" href="/">Home</a>
       </button>
+      <button th:replace="frag :: logout()"></button>
    </div>
 </body>
 </html>

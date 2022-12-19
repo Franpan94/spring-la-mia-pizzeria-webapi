@@ -19,10 +19,11 @@
    <div class="p-4" th:if="*{ingredients}">
            <h3>Ingredienti:</h3>
           <h4 th:each="ingredient : *{ingredients}" th:object="${ingredient}">[[*{name}]]</h4>
+          <h4 th:if="*{ingredients.size() < 1}">Non sono presenti ingredienti per questa pizza</h4>
    </div>
    
    <button class="btn btn-success">
-       <a style="text-decoration: none" class="text-white ms_text_decoration" href="/pizza/user">HomePage</a>
+       <a style="text-decoration: none" class="text-white ms_text_decoration" href="/pizza/user">HomePage pizza</a>
    </button>
    <button class="btn btn-warning">
        <a style="text-decoration: none" class="text-dark ms_text_decoration" th:href="@{/pizza/admin/edit/{id} (id=*{id})}" sec:authorize="hasAuthority('ADMIN')">Modifica la tua pizza</a>

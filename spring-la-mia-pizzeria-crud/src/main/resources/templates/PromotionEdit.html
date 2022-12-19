@@ -14,7 +14,7 @@
    <div class="row">
       <div class="col">
           <h1 class="text-center p-3">Modifica la tua promozione</h1>
-          <form method="POST" action="/promotion/update" th:object="${promotion}">
+          <form method="POST" th:action="@{/promotion/admin/update}" th:object="${promotion}">
            
              <input type="number" name="id" th:field="*{id}" style="display:none">
              <label for="exampleInputEmail1" class="form-label">Nome</label>
@@ -47,7 +47,7 @@
              <div class="pt-3 text-center">
                    <button type="submit" class="btn btn-warning">Modifica</button>
                    <button class="btn btn-success text-white"> 
-                      <a style="text-decoration: none" href="/promotion" class="text-white">HomePage</a>
+                      <a style="text-decoration: none" href="/promotion/user" class="text-white">HomePage promozioni</a>
                   </button>
              </div>
           </form>

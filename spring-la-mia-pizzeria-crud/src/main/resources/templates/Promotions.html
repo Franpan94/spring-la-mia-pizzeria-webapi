@@ -9,10 +9,15 @@
 </head>
 
 <body>
-<h1 class="text-center p-3">Promozioni</h1>
+<h1 class="text-center pt-3">Promozioni</h1>
+<div class="text-center p-4">
+      Logged user: <span sec:authentication="name">Bob</span>
+      Roles: <span sec:authentication="principal.authorities">[USER, ADMIN]</span>
+</div>
 <div class="text-center pb-3">
       <button class="btn btn-dark">
-        <a style="text-decoration: none" class="text-white" href="/promotion/create">Aggiungi la tua nuova promozione</a>
+        <a style="text-decoration: none" class="text-white" href="/promotion/admin/create"
+           sec:authorize="hasAuthority('ADMIN')">Aggiungi la tua nuova promozione</a>
       </button>
    </div>
    <div class="container">
@@ -42,10 +47,12 @@
                      </td>
                      <td class="text-end">
                        <button class="btn btn-warning">
-                         <a style="text-decoration: none" class="text-dark ms_text_decoration" th:href="@{/promotion/edit/{id} (id=*{id})}">Modifica la tua promozione</a>
+                         <a style="text-decoration: none" class="text-dark ms_text_decoration" th:href="@{/promotion/admin/edit/{id} (id=*{id})}"
+                            sec:authorize="hasAuthority('ADMIN')">Modifica la tua promozione</a>
                        </button>
                        <button class="btn btn-danger">
-                         <a style="text-decoration: none" class="text-white ms_text_decoration" th:href="@{/promotion/delete/{id} (id=*{id})}">Elimina</a>
+                         <a style="text-decoration: none" class="text-white ms_text_decoration" th:href="@{/promotion/admin/delete/{id} (id=*{id})}"
+                            sec:authorize="hasAuthority('ADMIN')">Elimina</a>
                        </button>
                      </td>
                  </tr>
@@ -56,10 +63,11 @@
          </div>
       </div>
    </div>
-   <div class="text-center">
+   <div class="pb-2 d-flex justify-content-around">
       <button class="btn btn-dark">
-        <a style="text-decoration: none" class="text-white" href="/">Home</a>
+          <a style="text-decoration: none" class="text-white ms_text_decoration" href="/">Home</a>
       </button>
-   </div>
+      <button th:replace="frag :: logout()"></button>
+    </div>
 </body>
 </html>

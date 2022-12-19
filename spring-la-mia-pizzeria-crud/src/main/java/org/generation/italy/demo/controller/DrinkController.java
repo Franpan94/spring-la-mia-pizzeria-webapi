@@ -26,7 +26,7 @@ public class DrinkController {
 	@Autowired
 	private DrinkService drinkService;
 	
-	@GetMapping
+	@GetMapping("/user")
 	public String index(Model model) {
 		
 		List<Drink> drinks = drinkService.findAll();
@@ -35,7 +35,7 @@ public class DrinkController {
 		return "Drinks";
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/user/{id}")
 	public String show(@PathVariable("id") int id, Model model) {
 		
 		Optional<Drink> optDrink = drinkService.findById(id);
@@ -45,7 +45,7 @@ public class DrinkController {
 		return "Drink";
 	}
 	
-	@GetMapping("/create")
+	@GetMapping("/admin/create")
 	public String create(Model model) {
 		
 		Drink drink = new Drink();
@@ -54,7 +54,7 @@ public class DrinkController {
 		return "DrinkCreate";
 	}
 	
-	@PostMapping("/store")
+	@PostMapping("/admin/store")
 	public String store(@Valid @ModelAttribute("drink") Drink drink, 
 		BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		
@@ -66,7 +66,7 @@ public class DrinkController {
 			
 			redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
 			
-			return "redirect:/drink/create";
+			return "redirect:/drink/admin/create";
 		}
 		
 		try {
@@ -77,13 +77,13 @@ public class DrinkController {
 			
 			String message = "Il nome deve essere unico";
 			redirectAttributes.addFlashAttribute("message", message);
-			return "redirect:/drink/create";
+			return "redirect:/drink/admin/create";
 		}
 		
-		return "redirect:/drink";
+		return "redirect:/drink/user";
 	}
 	
-	@GetMapping("/edit/{id}")
+	@GetMapping("/admin/edit/{id}")
 	public String edit(@PathVariable("id") int id, Model model) {
 		
 		Optional<Drink> optDrink = drinkService.findById(id);
@@ -93,7 +93,7 @@ public class DrinkController {
 		return "DrinkEdit";
 	}
 	
-	@PostMapping("/update")
+	@PostMapping("/admin/update")
 	public String update(@Valid Drink drink, 
 			BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		
@@ -105,7 +105,7 @@ public class DrinkController {
 			
 			redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
 			
-			return "redirect:/drink/edit/" + drink.getId();
+			return "redirect:/drink/admin/edit/" + drink.getId();
 		}
        
         try {
@@ -120,10 +120,10 @@ public class DrinkController {
 		}
 		
 		
-		return "redirect:/drink";
+		return "redirect:/drink/user";
 	}
 	
-	@GetMapping("/delete/{id}")
+	@GetMapping("/admin/delete/{id}")
 	public String delete(@PathVariable("id") int id,
 			              RedirectAttributes redirectAttributes) {
        
@@ -139,10 +139,10 @@ public class DrinkController {
 			redirectAttributes.addFlashAttribute("message", message);
 		}
 		
-		return "redirect:/drink";
+		return "redirect:/drink/user";
 	}
 	
-	@GetMapping("/search")
+	@GetMapping("/user/search")
 	public String searchByName(Model model, 
 			                   @RequestParam(name = "name", required = false) String name) {
 		
