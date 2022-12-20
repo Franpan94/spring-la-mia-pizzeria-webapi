@@ -53,4 +53,12 @@ public class PizzaApiController {
 		
 	}
 	
+	@GetMapping("/delete/{id}")
+	public boolean delete(@PathVariable("id") int id) {
+		
+		 pizzeriaService.deleteById(id);
+		 return true;
+		
+	}
+	
 }

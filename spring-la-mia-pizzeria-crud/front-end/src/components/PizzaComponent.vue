@@ -25,13 +25,22 @@
         <input type="number" name="price" v-model="pizza_create.price" /><br />
 
         <button type="submit">Crea</button>
-        <button @click="edit(PIZZE_EDIT_ID_DEFAULT)">Annulla</button>
       </form>
     </div>
 
     <div class="text-center pt-3" v-for="pizza in pizze" :key="pizza.id">
       <img :src="pizza.img" alt="img" class="w-25" /><br />
       <span>{{ pizza.name }}, prezzo: {{ pizza.price }} €</span><br />
+      
+      <div v-if="pizza.ingredients">
+        
+        <div v-for="ingredient in pizza.ingredients" :key="ingredient.id">
+            {{ ingredient.name }}
+          </div>
+      </div>
+     
+      <button v-else @click="getIngredients(pizza.id)">Ingredienti</button>
+      
       <div v-if="!pizza_edit_form">
         <button @click="pizza_edit_form = true">Modifica la tua pizza</button>
       </div>
@@ -60,7 +69,7 @@
           <button type="submit">Modifica</button>
         </form>
       </div>
-      <button>Elimina</button>
+      <button @click="deleted(pizza.id)">Elimina</button>
       <p>{{ pizza.description }}</p>
     </div>
   </div>
@@ -70,7 +79,8 @@
 import axios from "axios";
 
 const API_URL = "http://localhost:8080/api/1/pizza";
-const PIZZE_EDIT_ID_DEFAULT = -1;
+const API_URL_INGREDIENT = "http://localhost:8080/api/1/ingredient";
+const PIZZA_ID = -1;
 
 export default {
   name: "PizzaComponent",
@@ -78,7 +88,7 @@ export default {
   data: function () {
     return {
       pizze: [],
-      pizze_edit_id: PIZZE_EDIT_ID_DEFAULT,
+      pizza_id: PIZZA_ID,
       pizza_create: {},
       pizza_create_form: false,
       pizza_edit_form: false,
@@ -112,8 +122,8 @@ export default {
     },
 
     edit(id) {
-      this.pizze_edit_id = id;
-      console.log(this.pizze_edit_id);
+      this.pizza_id = id;
+      console.log(this.pizza_id);
     },
 
     getPizzaById(id) {
@@ -123,10 +133,10 @@ export default {
     editPizza(e) {
       e.preventDefault();
 
-      const id = this.pizze_edit_id;
+      const id = this.pizza_id;
       const pizza = this.getPizzaById(id);
 
-      this.edit(PIZZE_EDIT_ID_DEFAULT);
+      this.edit(PIZZA_ID);
 
       axios.post(API_URL + "/edit/" + id, pizza).then((result) => {
         const index = this.getPizzaIndexById(id);
@@ -138,6 +148,34 @@ export default {
         this.pizze[index] = pizza;
       });
     },
+
+    deleted(id){
+      axios.get(API_URL + '/delete/' + id).then(result => {
+
+        const deleted = result.data;
+        console.log(deleted);
+
+        if(!deleted) return
+        const index = this.getPizzaIndexById(id);
+        this.pizze.splice(index, 1);
+      })
+    },
+
+    getIngredients(idPizza){
+      axios.get(API_URL_INGREDIENT + '/pizza/' + idPizza).then(result => {
+
+        const ingredients = result.data;
+        if(ingredients == null) return;
+
+        const index = this.getPizzaIndexById(idPizza);
+        const pizza = this.pizze[index];
+
+        pizza.ingredients = ingredients;
+
+        this.pizze.splice(index, 1 , pizza);
+        console.log(this.pizze[index].ingredients);
+      })
+    }
   },
 
   created() {
