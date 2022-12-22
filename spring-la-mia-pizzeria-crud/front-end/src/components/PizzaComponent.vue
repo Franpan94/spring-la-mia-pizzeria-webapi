@@ -25,25 +25,28 @@
         <input type="number" name="price" v-model="pizza_create.price" /><br />
 
         <button type="submit">Crea</button>
+        <button @click="pizza_create_form=false">Annulla</button>
       </form>
     </div>
 
     <div class="text-center pt-3" v-for="pizza in pizze" :key="pizza.id">
       <img :src="pizza.img" alt="img" class="w-25" /><br />
-      <span>{{ pizza.name }}, prezzo: {{ pizza.price }} €</span><br />
-      
-      <div v-if="pizza.ingredients">
-        
-        <div v-for="ingredient in pizza.ingredients" :key="ingredient.id">
-            {{ ingredient.name }}
+      <div v-if="pizza_id != pizza.id">
+        <span>{{ pizza.name }}, prezzo: {{ pizza.price }} €</span>
+        <div v-if="pizza.ingredients">
+          <div v-if="pizza.ingredients.length > 0">
+            <div v-for="ingredient in pizza.ingredients" :key="ingredient.id">
+              {{ ingredient.name }}
+            </div>
           </div>
+          <div v-else>Non sono presenti ingredienti</div>
+        </div>
+        <button @click="edit(pizza.id)">Modifica</button>
       </div>
-     
-      <button v-else @click="getIngredients(pizza.id)">Ingredienti</button>
       
-      <div v-if="!pizza_edit_form">
-        <button @click="pizza_edit_form = true">Modifica la tua pizza</button>
-      </div>
+      
+
+      
       <div v-else>
         <form class="text-center" @submit="editPizza">
           <label for="name">Nome</label>
@@ -66,7 +69,8 @@
             v-model="pizza.price"
           /><br />
 
-          <button type="submit">Modifica</button>
+          <button type="submit">Aggiorna</button>
+          <button @click="edit(-1)">Annulla</button>
         </form>
       </div>
       <button @click="deleted(pizza.id)">Elimina</button>
@@ -80,7 +84,6 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8080/api/1/pizza";
 const API_URL_INGREDIENT = "http://localhost:8080/api/1/ingredient";
-const PIZZA_ID = -1;
 
 export default {
   name: "PizzaComponent",
@@ -88,7 +91,7 @@ export default {
   data: function () {
     return {
       pizze: [],
-      pizza_id: PIZZA_ID,
+      pizza_id: -1,
       pizza_create: {},
       pizza_create_form: false,
       pizza_edit_form: false,
@@ -98,6 +101,8 @@ export default {
   methods: {
     createPizza(e) {
       e.preventDefault();
+
+      this.pizza_create_form = false;
 
       axios.post(API_URL + "/create", this.pizza_create).then((result) => {
         console.log(JSON.stringify(result.data));
@@ -115,9 +120,7 @@ export default {
     getPizzaIndexById(id) {
       for (let i = 0; i < this.pizze.length; i++) {
         const pizza = this.pizze[i];
-        if (pizza.id == id) return i;
-
-        return -1;
+        if (pizza.id === id) return i;
       }
     },
 
@@ -131,18 +134,20 @@ export default {
     },
 
     editPizza(e) {
+
       e.preventDefault();
 
-      const id = this.pizza_id;
+      let id = this.pizza_id;
       const pizza = this.getPizzaById(id);
 
-      this.edit(PIZZA_ID);
+      this.edit(-1);
 
       axios.post(API_URL + "/edit/" + id, pizza).then((result) => {
         const index = this.getPizzaIndexById(id);
         const oldPizza = this.pizze[index];
 
         const pizza = result.data;
+        console.log(pizza);
 
         pizza.ingredients = oldPizza.ingredients;
         this.pizze[index] = pizza;
@@ -171,8 +176,6 @@ export default {
         const pizza = this.pizze[index];
 
         pizza.ingredients = ingredients;
-
-        this.pizze.splice(index, 1 , pizza);
         console.log(this.pizze[index].ingredients);
       })
     }
