@@ -61,4 +61,14 @@ public class PizzaApiController {
 		
 	}
 	
+	@GetMapping("/search/{name}")
+	public List<Pizzeria> searchByName(@PathVariable("name") String name) {
+		
+		List<Pizzeria> pizze = null;
+		
+		if(name == null) pizze = pizzeriaService.findAll();
+		else pizze = pizzeriaService.findByName(name);
+		
+		return pizze;
+	}
 }

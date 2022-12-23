@@ -46,6 +46,7 @@
 						      th:each="pizza : ${ingredient.pizze}"
 						>  [[${pizza.name}]], 
 						</span>
+						<span th:if="${ingredient.pizze.size < 1}" class="text-danger">Non ci sono pizze associate a questo ingrediente</span>
 					</td>			
                     <td class="text-end">
                        <button class="btn btn-warning">
