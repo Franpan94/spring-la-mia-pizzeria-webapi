@@ -1,11 +1,17 @@
 <template>
   <div class="pb-3">
     <h1 class="text-center pt-5">Pizze</h1>
-    <div class="container">
-      <div class="d-flex">
-        <input class="form-control" type="text" v-model.trim="name" @keyup.enter="search()">
-        <button class="btn btn-success" @click="search()">Ricerca</button>
+    <div class="container text-center">
+      <div v-if="!create_search">
+        <button @click="create_search = true" class="btn btn-primary">Ricerca</button>  
+      </div>
 
+      <div v-else>
+        <input class="form-control" type="text" v-model.trim="name" @keyup.enter="search()">
+        <div class="d-flex justify-content-around pt-3">
+          <button class="btn btn-success" @click="search()">Cerca</button>
+          <button class="btn btn-danger" @click="create_search = false">Annulla</button>
+        </div>
       </div>
     </div>
 
@@ -43,6 +49,7 @@
 
       <div class="text-center pt-5" v-for="pizza in pizze" :key="pizza.id">
         <img :src="pizza.img" alt="img" class="w-25" /><br />
+
         <div v-if="pizza_id != pizza.id">
           <h2>{{ pizza.name }}, prezzo: {{ pizza.price }} €</h2>
           <h4>Descrizione: {{ pizza.description }}</h4>
@@ -102,6 +109,7 @@ export default {
       pizza_id: -1,
       pizza_create: {},
       pizza_create_form: false,
+      create_search: false,
       name: ''
     };
   },
